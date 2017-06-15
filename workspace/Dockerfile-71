@@ -204,6 +204,22 @@ RUN if [ ${INSTALL_DRUSH} = true ]; then \
     drush core-status \
 ;fi
 
+#####################################
+# PhantomJS:
+#####################################
+USER root
+
+ARG INSTALL_PHANTOMJS=false
+ENV PHANTOMJS_VERSION 2.1.1
+ENV INSTALL_PHANTOMJS ${INSTALL_PHANTOMJS}
+COPY ./phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2  /tmp/
+RUN if [ ${INSTALL_PHANTOMJS} = true ]; then \
+    tar xjf /tmp/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -C /usr/local/ && \
+    mv /usr/local/phantomjs-$PHANTOMJS_VERSION-linux-x86_64 /usr/local/phantomjs && \
+    ln -s /usr/local/phantomjs/bin/phantomjs /usr/bin/phantomjs && \
+    chmod +x /usr/bin/phantomjs \
+;fi
+
 USER laradock
 
 #####################################
@@ -323,6 +339,8 @@ RUN if [ ${INSTALL_V8JS} = true ]; then \
     && pecl install v8js \
     && echo "extension=v8js.so" >> /etc/php/7.1/cli/php.ini \
 ;fi
+
+
 
 #####################################
 # Non-root user : PHPUnit path
