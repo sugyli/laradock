@@ -36,6 +36,16 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Final Touch
 #--------------------------------------------------------------------------
 #
+ENV PHANTOMJS_VERSION 2.1.1
+COPY ./phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2  /tmp/
+RUN tar xjf /tmp/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -C /usr/local/ && \
+    mv /usr/local/phantomjs-$PHANTOMJS_VERSION-linux-x86_64 /usr/local/phantomjs && \
+    ln -s /usr/local/phantomjs/bin/phantomjs /bin/phantomjs && \
+    chmod +x /bin/phantomjs
 
-RUN rm -r /var/lib/apt/lists/*
+
+
+
+
+RUN rm -r /var/lib/apt/lists/* /tmp/*
 WORKDIR /etc/supervisor/conf.d/
